@@ -1,5 +1,6 @@
 import { Icon } from '@/components/ui/Icon'
 import { Price } from '@/components/ui/Price'
+import { Render } from '@/components/ui/Render'
 import type { ProductId } from '@/features/products/types'
 import { useLastNonEmpty } from '@/hooks/useLastNonEmpty'
 import { usePresence } from '@/hooks/usePresence'
@@ -69,12 +70,12 @@ function NudgeRow({
   return (
     <li className="flex items-center gap-2.5">
       <span className="relative grid size-7 shrink-0 place-items-center rounded-full bg-green-500 text-white">
-        {isUnlock && (
+        <Render if={isUnlock}>
           <span
             aria-hidden="true"
             className="absolute inset-0 animate-ping rounded-full bg-green-400 opacity-30"
           />
-        )}
+        </Render>
         <Icon name={isUnlock ? 'gift' : 'check'} className="relative size-3.5" />
       </span>
 
@@ -85,22 +86,24 @@ function NudgeRow({
         >
           {message}
         </p>
-        {saving > 0 && (
+        <Render if={saving > 0}>
           <p className="text-xs font-medium text-green-700">
             You save <Price amount={saving} />
           </p>
-        )}
+        </Render>
       </div>
 
-      {action && (
-        <button
-          type="button"
-          onClick={() => onAction(action.productId)}
-          className="h-7 shrink-0 rounded-full bg-green-600 px-3 text-xs font-bold text-white transition-colors hover:bg-green-700"
-        >
-          {action.label}
-        </button>
-      )}
+      <Render if={action}>
+        {(act) => (
+          <button
+            type="button"
+            onClick={() => onAction(act.productId)}
+            className="h-7 shrink-0 rounded-full bg-green-600 px-3 text-xs font-bold text-white transition-colors hover:bg-green-700"
+          >
+            {act.label}
+          </button>
+        )}
+      </Render>
     </li>
   )
 }

@@ -1,6 +1,7 @@
 import { useAppSelector } from '@/app/hooks'
 import { Icon } from '@/components/ui/Icon'
 import { Price } from '@/components/ui/Price'
+import { Render } from '@/components/ui/Render'
 import { useBasketDrawer } from '@/features/basket/hooks/useBasketDrawer'
 import { selectBill } from '@/features/basket/selectors'
 
@@ -26,14 +27,14 @@ export function AppHeader() {
         >
           <span className="relative grid size-8 place-items-center rounded-full bg-white/10">
             <Icon name="bag" className="size-4" />
-            {itemCount > 0 && (
+            <Render if={itemCount > 0}>
               <span
                 key={itemCount}
                 className="animate-pop bg-brand-500 absolute -top-1 -right-1 grid min-w-4.5 place-items-center rounded-full px-1 text-[10px] leading-4.5 font-bold text-white"
               >
                 {itemCount}
               </span>
-            )}
+            </Render>
           </span>
           <Price amount={total} className="font-semibold" />
         </button>

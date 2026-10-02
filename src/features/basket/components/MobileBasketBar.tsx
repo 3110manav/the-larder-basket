@@ -1,6 +1,7 @@
 import { useAppSelector } from '@/app/hooks'
 import { Icon } from '@/components/ui/Icon'
 import { Price } from '@/components/ui/Price'
+import { Render } from '@/components/ui/Render'
 import { useBasketDrawer } from '../hooks/useBasketDrawer'
 import { selectBill } from '../selectors'
 
@@ -26,11 +27,11 @@ export function MobileBasketBar() {
         </span>
         <span className="flex-1">
           <span className="block text-sm font-bold">View basket</span>
-          {totalSavings > 0 && (
+          <Render if={totalSavings > 0}>
             <span className="block text-xs font-medium text-green-300">
               Saving <Price amount={totalSavings} />
             </span>
-          )}
+          </Render>
         </span>
         <Price amount={total} className="text-lg font-extrabold" />
         <Icon name="arrowRight" className="size-4 text-white/60" />

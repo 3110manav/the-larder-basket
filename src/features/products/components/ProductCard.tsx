@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Price } from '@/components/ui/Price'
 import { QuantityStepper } from '@/components/ui/QuantityStepper'
+import { Render } from '@/components/ui/Render'
 import { itemAdded, MAX_QUANTITY } from '@/features/basket/basketSlice'
 import { useBasketItem } from '@/features/basket/hooks/useBasketItem'
 import { useProductOffers } from '@/features/basket/hooks/useProductOffers'
@@ -37,7 +38,7 @@ export function ProductCard({ product }: { product: Product }) {
       >
         <div className="relative">
           <ProductThumb product={product} size="lg" />
-          {offers.length > 0 && (
+          <Render if={offers.length > 0}>
             <div className="absolute inset-x-3 top-3 flex flex-wrap gap-1.5">
               {offers.map((offer) => (
                 <Badge key={offer.id}>
@@ -46,7 +47,7 @@ export function ProductCard({ product }: { product: Product }) {
                 </Badge>
               ))}
             </div>
-          )}
+          </Render>
         </div>
 
         <div className="px-1.5 pt-4 pb-1">
@@ -58,9 +59,11 @@ export function ProductCard({ product }: { product: Product }) {
           <div className="mt-4 flex items-end justify-between gap-3">
             <div className="flex min-h-11 min-w-0 flex-col justify-end">
               <Price amount={product.price} className="text-ink-900 text-lg font-extrabold" />
-              {line && <BasketCost line={line} />}
+              <Render if={line}>
+                <BasketCost line={line!} />
+              </Render>
             </div>
-            {inBasket ? (
+            <Render if={inBasket}>
               <QuantityStepper
                 quantity={quantity}
                 itemName={product.name}
@@ -68,12 +71,13 @@ export function ProductCard({ product }: { product: Product }) {
                 onDecrement={decrement}
                 max={MAX_QUANTITY}
               />
-            ) : (
+            </Render>
+            <Render if={!inBasket}>
               <Button onClick={add} aria-label={`Add ${product.name} to basket`}>
                 <Icon name="plus" className="size-4" />
                 Add
               </Button>
-            )}
+            </Render>
           </div>
         </div>
       </div>
@@ -87,11 +91,9 @@ export function ProductCard({ product }: { product: Product }) {
 function BasketCost({ line }: { line: BillLine }) {
   return (
     <p className="text-xs whitespace-nowrap text-slate-500">
-      {line.savingsTotal > 0 && (
-        <>
-          <Price amount={line.subtotal} className="line-through" />{' '}
-        </>
-      )}
+      <Render if={line.savingsTotal > 0}>
+        <Price amount={line.subtotal} className="line-through" />{' '}
+      </Render>
       <Price
         amount={line.total}
         className={cn('font-semibold', line.savingsTotal > 0 ? 'text-green-700' : 'text-ink-900')}

@@ -1,4 +1,5 @@
 import { Price } from '@/components/ui/Price'
+import { Render } from '@/components/ui/Render'
 import type { Bill } from '../types'
 import { SummaryRow } from './SummaryRow'
 
@@ -13,7 +14,7 @@ export function BasketSummary({ bill }: { bill: Bill }) {
         value={<Price amount={subtotal} className="text-ink-900 font-semibold" />}
       />
 
-      {appliedOffers.length > 0 && (
+      <Render if={appliedOffers.length > 0}>
         <div className="rounded-2xl bg-green-50 px-3.5 py-2.5 ring-1 ring-green-200/70 ring-inset">
           <SummaryRow
             className="font-semibold text-green-800"
@@ -29,7 +30,7 @@ export function BasketSummary({ bill }: { bill: Bill }) {
             ))}
           </ul>
         </div>
-      )}
+      </Render>
 
       <SummaryRow
         className="text-ink-900 pt-1"

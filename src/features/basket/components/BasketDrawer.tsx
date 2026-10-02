@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { Button } from '@/components/ui/Button'
 import { Drawer } from '@/components/ui/Drawer'
 import { Icon } from '@/components/ui/Icon'
+import { Render } from '@/components/ui/Render'
 import { CheckoutButton } from '@/features/orders/components/CheckoutButton'
 import { basketCleared } from '../basketSlice'
 import { useBasketDrawer } from '../hooks/useBasketDrawer'
@@ -25,17 +26,17 @@ export function BasketDrawer() {
           <h2 id={HEADING_ID} className="text-ink-900 text-xl font-extrabold tracking-tight">
             Your basket
           </h2>
-          {!isEmpty && (
+          <Render if={!isEmpty}>
             <span className="text-sm font-medium text-slate-400">
               {bill.itemCount} {bill.itemCount === 1 ? 'item' : 'items'}
             </span>
-          )}
+          </Render>
         </div>
-        {!isEmpty && (
+        <Render if={!isEmpty}>
           <Button variant="ghost" size="sm" onClick={() => dispatch(basketCleared())}>
             Clear all
           </Button>
-        )}
+        </Render>
         <button
           type="button"
           onClick={close}
@@ -46,21 +47,20 @@ export function BasketDrawer() {
         </button>
       </header>
 
-      {isEmpty ? (
+      <Render if={isEmpty}>
         <EmptyBasket onBrowse={close} />
-      ) : (
-        <>
-          <ul className="min-h-0 flex-1 divide-y divide-slate-100 overflow-y-auto overscroll-contain px-5 py-2 sm:px-6">
-            {bill.lines.map((line) => (
-              <BasketLine key={line.product.id} line={line} />
-            ))}
-          </ul>
-          <footer className="shrink-0 border-t border-slate-100 bg-white px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
-            <BasketSummary bill={bill} />
-            <CheckoutButton total={bill.total} className="mt-4" />
-          </footer>
-        </>
-      )}
+      </Render>
+      <Render if={!isEmpty}>
+        <ul className="min-h-0 flex-1 divide-y divide-slate-100 overflow-y-auto overscroll-contain px-5 py-2 sm:px-6">
+          {bill.lines.map((line) => (
+            <BasketLine key={line.product.id} line={line} />
+          ))}
+        </ul>
+        <footer className="shrink-0 border-t border-slate-100 bg-white px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
+          <BasketSummary bill={bill} />
+          <CheckoutButton total={bill.total} className="mt-4" />
+        </footer>
+      </Render>
     </Drawer>
   )
 }

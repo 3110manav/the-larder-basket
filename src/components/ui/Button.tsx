@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes } from 'react'
 import { cn } from '@/lib/cn'
+import { Render } from './Render'
 import { Spinner } from './Spinner'
 
 type Variant = 'primary' | 'accent' | 'secondary' | 'ghost'
@@ -50,7 +51,9 @@ export function Button({
       )}
       {...props}
     >
-      {loading && <Spinner />}
+      <Render if={loading}>
+        <Spinner />
+      </Render>
       {children}
     </button>
   )
