@@ -7,6 +7,8 @@ interface BaseOffer {
   description: string
   /** Short text for product badges. */
   badge: string
+  /** Punchy label for the deals strip, e.g. "50% off". */
+  highlight: string
 }
 
 /** Buy `buy` of a product and get the next `free` at no cost. */
@@ -42,4 +44,22 @@ export interface AppliedOffer {
   /** The basket line the saving is shown against. */
   productId: ProductId
   saving: Pence
+}
+
+export interface NudgeAction {
+  productId: ProductId
+  label: string
+}
+
+/**
+ * A hint shown under a product card: either an offer that's already
+ * working for the shopper, or what they need to add to unlock one.
+ */
+export interface OfferNudge {
+  offerId: string
+  status: 'applied' | 'unlock'
+  message: string
+  /** Saving credited to this product, if any. */
+  saving: Pence
+  action?: NudgeAction
 }

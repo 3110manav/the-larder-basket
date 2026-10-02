@@ -5,7 +5,7 @@ import { getProduct } from '@/features/products/catalog'
 import { sum } from '@/lib/money'
 import type { BasketItem, Bill, BillLine } from './types'
 
-function toQuantities(items: readonly BasketItem[]): Quantities {
+export function toQuantities(items: readonly BasketItem[]): Quantities {
   return Object.fromEntries(items.map((item) => [item.productId, item.quantity]))
 }
 
