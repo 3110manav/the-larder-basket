@@ -11,7 +11,7 @@ describe('<App />', () => {
 
     const cheese = screen.getByRole('article', { name: 'Cheese' })
     await user.click(within(cheese).getByRole('button', { name: 'Add Cheese to basket' }))
-    await user.click(within(cheese).getByRole('button', { name: 'Add free' }))
+    await user.click(await within(cheese).findByRole('button', { name: 'Add free' }))
     await user.click(screen.getByRole('button', { name: 'Add Milk to basket' }))
 
     await user.click(screen.getByRole('button', { name: 'Open basket, 3 items' }))

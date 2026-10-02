@@ -5,7 +5,8 @@ import { getProduct } from '@/features/products/catalog'
 import { renderWithStore } from '@/test/renderWithStore'
 import { ProductCard } from './ProductCard'
 
-const offersPanel = () => screen.getByRole('list', { name: 'Offers for this product' })
+// The panel slides in on the next animation frame, so wait for it.
+const offersPanel = () => screen.findByRole('list', { name: 'Offers for this product' })
 
 describe('<ProductCard />', () => {
   it('shows the product, its price and any offer', () => {
@@ -45,12 +46,13 @@ describe('<ProductCard />', () => {
     renderWithStore(<ProductCard product={getProduct('cheese')} />)
 
     await user.click(screen.getByRole('button', { name: 'Add Cheese to basket' }))
-    expect(offersPanel()).toHaveTextContent('Add 1 more cheese – it’s free!')
+    const panel = await offersPanel()
+    expect(panel).toHaveTextContent('Add 1 more cheese – it’s free!')
 
-    await user.click(within(offersPanel()).getByRole('button', { name: 'Add free' }))
+    await user.click(within(panel).getByRole('button', { name: 'Add free' }))
 
-    expect(offersPanel()).toHaveTextContent('1 free cheese applied')
-    expect(offersPanel()).toHaveTextContent('You save £0.90')
+    expect(panel).toHaveTextContent('1 free cheese applied')
+    expect(panel).toHaveTextContent('You save £0.90')
     // Two cheeses, but you only pay for one.
     expect(screen.getByText(/in basket/)).toHaveTextContent('£1.80 £0.90 in basket')
   })
@@ -61,9 +63,10 @@ describe('<ProductCard />', () => {
       preloadedState: { basket: { items: [{ productId: 'bread', quantity: 1 }] } },
     })
 
-    await user.click(within(offersPanel()).getByRole('button', { name: 'Add soup' }))
+    const panel = await offersPanel()
+    await user.click(within(panel).getByRole('button', { name: 'Add soup' }))
 
     expect(store.getState().basket.items).toContainEqual({ productId: 'soup', quantity: 1 })
-    expect(offersPanel()).toHaveTextContent('Half price on 1 bread')
+    expect(panel).toHaveTextContent('Half price on 1 bread')
   })
 })
