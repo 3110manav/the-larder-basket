@@ -13,23 +13,23 @@ export function BasketLine({ line }: { line: BillLine }) {
   const { add, decrement, remove } = useBasketItem(product.id)
 
   return (
-    <li aria-label={product.name} className="py-5 first:pt-0">
+    <li aria-label={product.name} className="py-4">
       <div className="flex items-center gap-3">
         <ProductThumb product={product} />
         <div className="min-w-0 flex-1">
-          <p className="truncate font-medium text-stone-900">{product.name}</p>
-          <p className="flex items-center gap-1.5 text-sm whitespace-nowrap text-stone-500">
+          <p className="text-ink-900 truncate font-bold">{product.name}</p>
+          <p className="flex items-center gap-1.5 text-sm whitespace-nowrap text-slate-500">
             <span>
               <Price amount={product.price} /> each
             </span>
-            <span aria-hidden="true" className="text-stone-300">
+            <span aria-hidden="true" className="text-slate-300">
               ·
             </span>
             <button
               type="button"
               onClick={remove}
               aria-label={`Remove ${product.name} from basket`}
-              className="rounded text-stone-400 transition-colors hover:text-rose-600"
+              className="rounded text-slate-400 transition-colors hover:text-rose-600"
             >
               Remove
             </button>
@@ -45,30 +45,30 @@ export function BasketLine({ line }: { line: BillLine }) {
         />
       </div>
 
-      <dl className="mt-3 space-y-1.5 rounded-2xl bg-stone-50 px-4 py-3 text-sm">
+      <dl className="mt-3 space-y-1.5 rounded-2xl bg-slate-50 px-4 py-3 text-sm">
         <SummaryRow
           label={
-            <span className="text-stone-500">
+            <span className="text-slate-500">
               Item price · {formatPrice(product.price)} × {quantity}
             </span>
           }
-          value={<span className="text-stone-500">{formatPrice(subtotal)}</span>}
+          value={<span className="text-slate-500">{formatPrice(subtotal)}</span>}
         />
         {savings.map((saving) => (
           <SummaryRow
             key={saving.offerId}
-            className="text-brand-700"
+            className="font-medium text-green-700"
             label={
               <span className="flex items-center gap-1.5">
                 <Icon name="tag" className="size-3.5 shrink-0" />
                 {saving.title}
               </span>
             }
-            value={<Price amount={saving.saving} negative className="font-medium" />}
+            value={<Price amount={saving.saving} negative className="font-bold" />}
           />
         ))}
         <SummaryRow
-          className="border-t border-stone-200/80 pt-1.5 font-medium text-stone-900"
+          className="text-ink-900 border-t border-slate-200/80 pt-1.5 font-bold"
           label="Item cost"
           value={<Price amount={total} />}
         />

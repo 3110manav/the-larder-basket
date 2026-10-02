@@ -20,6 +20,24 @@ component libraries are used. Orders can be saved to **Firestore**.
 - **Soup** – each soup gets you one half-price bread
 - **Butter** – a third off
 
+As you shop, each product card shows a small green panel that slides out underneath it. It either
+confirms an offer that's working ("1 free cheese applied · You save £0.90") or tells you what to
+add to unlock one ("Add 1 more cheese – it's free!"), with a one-tap button to do it.
+
+The basket opens as a side drawer on desktop and as a bottom sheet on mobile. It closes on an
+outside click, Escape, or a swipe down on mobile, and checkout stays pinned at the bottom.
+
+## Design
+
+| Token      | Colour    | Used for                      |
+| ---------- | --------- | ----------------------------- |
+| Canvas     | `#F5F6F8` | Page background               |
+| Ink        | `#0B1220` | Text, primary buttons, header |
+| Tangerine  | `#FF6A2B` | Deal badges, checkout         |
+| Mint green | `#22C55E` | Savings and offer panels only |
+
+Type is set in Plus Jakarta Sans. All tokens live in `src/index.css` under `@theme`.
+
 ## Getting started
 
 ```bash
@@ -43,13 +61,13 @@ src/
 ├── app/                     # Store setup and typed hooks
 ├── components/
 │   ├── layout/              # Header, hero
-│   └── ui/                  # Reusable primitives: Button, QuantityStepper, Modal, Price…
+│   └── ui/                  # Reusable primitives: Button, QuantityStepper, Drawer, Modal…
 ├── features/
 │   ├── products/            # Catalog data, product grid & cards
-│   ├── offers/              # Offer definitions and the pricing rules engine
-│   ├── basket/              # Basket slice, bill calculation, selectors, basket UI
+│   ├── offers/              # Offer definitions, pricing rules and shopper nudges
+│   ├── basket/              # Basket + drawer slices, bill calculation, selectors, basket UI
 │   └── orders/              # Checkout thunk, order repositories (Firestore / local), confirmation
-├── hooks/                   # Generic hooks (escape key, scroll lock, in-view)
+├── hooks/                   # Generic hooks (presence, drag to dismiss, scroll lock, focus…)
 ├── lib/                     # Money helpers, storage, Firebase client
 └── test/                    # Test setup and helpers
 ```
@@ -63,15 +81,18 @@ Code is grouped by feature, with tests living next to the code they cover.
   `multiBuy`, `linkedDiscount` and `percentageOff`. Adding a new "buy 3 for 2" or "20% off milk"
   is a one-line config change – no new code.
 - `applyOffers` works out the saving for each offer and credits it to the product it discounts.
+- `getOfferNudges` uses the same rules to tell each product card what to say: what's already
+  applied, or what to add next.
 - `calculateBill` turns the basket into lines (subtotal, savings, item cost) plus overall totals.
   It's a pure function, exposed to components through a memoised `selectBill` selector.
 
 ## State
 
-| Slice    | Holds                                                      |
-| -------- | ---------------------------------------------------------- |
-| `basket` | The items and quantities in the basket, in the order added |
-| `orders` | Checkout status, the last placed order and any error       |
+| Slice          | Holds                                                      |
+| -------------- | ---------------------------------------------------------- |
+| `basket`       | The items and quantities in the basket, in the order added |
+| `basketDrawer` | Whether the basket drawer / sheet is open                  |
+| `orders`       | Checkout status, the last placed order and any error       |
 
 The bill is always **derived** from the basket and never stored. The basket is persisted to
 `localStorage` with listener middleware, so a refresh doesn't lose your shopping.
@@ -113,4 +134,6 @@ Vitest with React Testing Library covers:
 - the offer rules and bill calculation, including the sample basket from the brief
   (soup, 3 × bread, butter → £5.10 − £0.95 = **£4.15**)
 - basket reducers, persistence and the checkout thunk
-- the product card, the basket panel and a full add-to-basket → checkout flow
+- the offer nudges shown on product cards
+- the product card, the basket drawer (open/close, outside click) and a full add-to-basket →
+  checkout flow

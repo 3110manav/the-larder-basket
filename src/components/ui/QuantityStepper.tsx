@@ -28,7 +28,7 @@ export function QuantityStepper({
 }: QuantityStepperProps) {
   const styles = sizes[size]
   const buttonClass = cn(
-    'grid place-items-center rounded-full text-stone-600 transition-colors hover:bg-white hover:text-stone-900 hover:shadow-sm disabled:pointer-events-none disabled:opacity-40',
+    'grid place-items-center rounded-full text-slate-600 transition-colors hover:bg-white hover:text-ink-900 hover:shadow-sm disabled:pointer-events-none disabled:opacity-40',
     styles.button,
   )
 
@@ -37,7 +37,7 @@ export function QuantityStepper({
       role="group"
       aria-label={`${itemName} quantity`}
       className={cn(
-        'inline-flex items-center rounded-full bg-stone-100 p-0',
+        'inline-flex items-center rounded-full bg-slate-100',
         styles.wrapper,
         className,
       )}
@@ -52,7 +52,7 @@ export function QuantityStepper({
       </button>
       <span
         aria-live="polite"
-        className={cn('text-center font-semibold text-stone-900 tabular-nums', styles.value)}
+        className={cn('text-ink-900 text-center font-bold tabular-nums', styles.value)}
       >
         {quantity}
       </span>

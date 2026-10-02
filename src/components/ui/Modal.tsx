@@ -23,7 +23,7 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
       <div
         aria-hidden="true"
         onClick={onClose}
-        className="animate-fade-in absolute inset-0 bg-stone-950/40 backdrop-blur-[2px]"
+        className="animate-fade-in bg-ink-950/40 absolute inset-0 backdrop-blur-[2px]"
       />
       <div
         role="dialog"
@@ -35,7 +35,7 @@ export function Modal({ open, title, onClose, children }: ModalProps) {
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 grid size-9 place-items-center rounded-full text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-700"
+          className="hover:text-ink-900 absolute top-4 right-4 grid size-9 place-items-center rounded-full text-slate-400 transition-colors hover:bg-slate-100"
         >
           <Icon name="close" className="size-4" />
         </button>

@@ -15,13 +15,19 @@ export function CheckoutButton({ total, className }: CheckoutButtonProps) {
 
   return (
     <div className={className}>
-      <Button size="lg" className="w-full" onClick={checkout} loading={isSubmitting}>
+      <Button
+        variant="accent"
+        size="lg"
+        className="w-full"
+        onClick={checkout}
+        loading={isSubmitting}
+      >
         {isSubmitting ? (
           'Placing order…'
         ) : (
           <>
             Checkout
-            <span className="opacity-40">·</span>
+            <span className="opacity-50">·</span>
             <Price amount={total} />
             <Icon name="arrowRight" className="ml-auto size-4" />
           </>
@@ -34,7 +40,7 @@ export function CheckoutButton({ total, className }: CheckoutButtonProps) {
         </p>
       )}
 
-      <p className="mt-3 text-center text-xs text-stone-400">
+      <p className="mt-2.5 text-center text-xs text-slate-400">
         {isFirestoreEnabled
           ? 'Orders are saved securely to Firestore.'
           : 'Demo mode – orders are saved on this device.'}

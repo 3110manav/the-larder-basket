@@ -1,4 +1,5 @@
 import { combineReducers, configureStore, createListenerMiddleware } from '@reduxjs/toolkit'
+import basketDrawerReducer from '@/features/basket/basketDrawerSlice'
 import basketReducer from '@/features/basket/basketSlice'
 import { saveBasket } from '@/features/basket/persistence'
 import ordersReducer from '@/features/orders/ordersSlice'
@@ -7,6 +8,7 @@ import type { OrderRepository } from '@/features/orders/types'
 
 const rootReducer = combineReducers({
   basket: basketReducer,
+  basketDrawer: basketDrawerReducer,
   orders: ordersReducer,
 })
 

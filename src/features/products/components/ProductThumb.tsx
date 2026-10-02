@@ -3,7 +3,8 @@ import type { Product } from '../types'
 
 const sizes = {
   sm: 'size-12 rounded-xl text-2xl',
-  lg: 'aspect-[5/4] w-full rounded-2xl text-6xl',
+  md: 'size-16 rounded-2xl text-3xl',
+  lg: 'aspect-[2/1] w-full rounded-2xl text-6xl',
 }
 
 interface ProductThumbProps {
@@ -23,7 +24,7 @@ export function ProductThumb({ product, size = 'sm', className }: ProductThumbPr
         className,
       )}
     >
-      <span className="drop-shadow-[0_6px_8px_rgb(0_0_0/0.12)]">{product.emoji}</span>
+      <span className="drop-shadow-[0_8px_10px_rgb(11_18_32/0.15)]">{product.emoji}</span>
     </div>
   )
 }

@@ -2,15 +2,17 @@ import type { ButtonHTMLAttributes } from 'react'
 import { cn } from '@/lib/cn'
 import { Spinner } from './Spinner'
 
-type Variant = 'primary' | 'secondary' | 'ghost'
+type Variant = 'primary' | 'accent' | 'secondary' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
 
 const variants: Record<Variant, string> = {
   primary:
-    'bg-brand-800 text-white shadow-sm hover:bg-brand-900 active:bg-brand-900 disabled:bg-stone-300 disabled:text-stone-500',
+    'bg-ink-900 text-white shadow-sm hover:bg-ink-800 active:bg-ink-950 disabled:bg-slate-200 disabled:text-slate-400',
+  accent:
+    'bg-brand-500 text-white shadow-[0_8px_20px_-8px_var(--color-brand-500)] hover:bg-brand-600 active:bg-brand-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none',
   secondary:
-    'bg-white text-stone-800 ring-1 ring-stone-900/10 hover:bg-stone-50 hover:ring-stone-900/15 disabled:text-stone-400',
-  ghost: 'text-stone-500 hover:bg-stone-900/5 hover:text-stone-800 disabled:text-stone-300',
+    'bg-white text-ink-900 ring-1 ring-slate-200 hover:bg-slate-50 hover:ring-slate-300 disabled:text-slate-400',
+  ghost: 'text-slate-500 hover:bg-slate-100 hover:text-ink-900 disabled:text-slate-300',
 }
 
 const sizes: Record<Size, string> = {
@@ -41,7 +43,7 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       className={cn(
-        'inline-flex shrink-0 items-center justify-center font-medium whitespace-nowrap transition-colors duration-150 disabled:cursor-not-allowed',
+        'inline-flex shrink-0 items-center justify-center font-semibold whitespace-nowrap transition-colors duration-150 disabled:cursor-not-allowed',
         variants[variant],
         sizes[size],
         className,

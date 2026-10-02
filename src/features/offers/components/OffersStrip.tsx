@@ -5,17 +5,20 @@ import { OFFERS } from '../offers'
 
 export function OffersStrip() {
   return (
-    <section aria-label="This week’s offers" className="grid gap-3 sm:grid-cols-3">
+    <section aria-label="This week’s offers" className="grid gap-3">
       {OFFERS.map((offer) => (
         <div
           key={offer.id}
-          className="flex items-center gap-4 rounded-2xl bg-white/70 p-3 pr-4 ring-1 ring-stone-900/5"
+          className="shadow-card flex items-center gap-4 rounded-3xl bg-white p-3 pr-5 ring-1 ring-slate-200/60"
         >
-          <ProductThumb product={getProduct(getDiscountedProductId(offer))} />
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-stone-900">{offer.title}</p>
-            <p className="mt-0.5 text-xs leading-relaxed text-stone-500">{offer.description}</p>
+          <ProductThumb product={getProduct(getDiscountedProductId(offer))} size="md" />
+          <div className="min-w-0 flex-1">
+            <p className="text-ink-900 font-bold">{offer.title}</p>
+            <p className="mt-0.5 text-sm text-slate-500">{offer.description}</p>
           </div>
+          <span className="bg-brand-50 text-brand-600 hidden shrink-0 rounded-full px-3 py-1.5 text-xs font-extrabold tracking-wide uppercase min-[420px]:inline">
+            {offer.highlight}
+          </span>
         </div>
       ))}
     </section>
