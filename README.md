@@ -3,6 +3,8 @@
 A small grocery storefront that builds a bill as you shop: a subtotal, every special offer that
 applies with its saving, and the final total.
 
+**Live demo:** https://larder-basket.web.app
+
 Built with **React 19**, **Redux Toolkit**, **TypeScript** and **Tailwind CSS v4**. No UI or
 component libraries are used. Orders can be saved to **Firestore**.
 
@@ -100,10 +102,11 @@ The bill is always **derived** from the basket and never stored. The basket is p
 Checkout is a `createAsyncThunk` that receives its `OrderRepository` through the thunk's
 `extraArgument`. That keeps Firebase out of the Redux code and lets tests swap in a fake.
 
-## Firestore (optional)
+## Firestore
 
-Without configuration the app runs in demo mode and keeps orders in `localStorage`.
-To save orders to Firestore:
+The live site saves every order to the `orders` collection in Cloud Firestore (region `eur3`).
+Without configuration, for example in a fresh clone, the app runs in demo mode and keeps orders
+in `localStorage`. To use your own Firestore:
 
 1. Create a Firebase project and enable **Cloud Firestore**.
 2. Copy `.env.example` to `.env.local` and fill in your web app config.
