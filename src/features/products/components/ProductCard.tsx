@@ -28,7 +28,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <article
       aria-label={product.name}
-      className="flex flex-col transition-transform duration-200 hover:-translate-y-0.5"
+      className="group flex flex-col transition-transform duration-200 hover:-translate-y-0.5"
     >
       <div
         className={cn(
@@ -39,7 +39,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="relative">
           <ProductThumb product={product} size="lg" />
           <Render if={offers.length > 0}>
-            <div className="absolute inset-x-3 top-3 flex flex-wrap gap-1.5">
+            <div className="pointer-events-none absolute inset-x-3 top-3 z-10 flex flex-wrap gap-1.5">
               {offers.map((offer) => (
                 <Badge key={offer.id}>
                   <Icon name="tag" className="size-3" />
