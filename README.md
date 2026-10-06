@@ -140,3 +140,7 @@ Vitest with React Testing Library covers:
 - the offer nudges shown on product cards
 - the product card, the basket drawer (open/close, outside click) and a full add-to-basket →
   checkout flow
+
+<!-- To deploy -->
+<!-- npm run build
+npx firebase-tools deploy --only hosting -->

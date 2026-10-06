@@ -1,4 +1,4 @@
-import { useAppDispatch } from '@/app/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -8,10 +8,11 @@ import { Render } from '@/components/ui/Render'
 import { itemAdded, MAX_QUANTITY } from '@/features/basket/basketSlice'
 import { useBasketItem } from '@/features/basket/hooks/useBasketItem'
 import { useProductOffers } from '@/features/basket/hooks/useProductOffers'
+import { selectIsMaxBudget } from '@/features/basket/selectors'
+import type { BillLine } from '@/features/basket/types'
 import { getOffersForProduct } from '@/features/offers/applyOffers'
 import { OfferNudgePanel } from '@/features/offers/components/OfferNudgePanel'
 import { OFFERS } from '@/features/offers/offers'
-import type { BillLine } from '@/features/basket/types'
 import { cn } from '@/lib/cn'
 import type { Product, ProductId } from '../types'
 import { ProductThumb } from './ProductThumb'
@@ -22,6 +23,7 @@ export function ProductCard({ product }: { product: Product }) {
   const { nudges, line } = useProductOffers(product.id)
   const offers = getOffersForProduct(OFFERS, product.id)
   const inBasket = quantity > 0
+  const isMaxBill = useAppSelector(selectIsMaxBudget)
 
   const addProduct = (productId: ProductId) => dispatch(itemAdded(productId))
 
@@ -73,7 +75,7 @@ export function ProductCard({ product }: { product: Product }) {
               />
             </Render>
             <Render if={!inBasket}>
-              <Button onClick={add} aria-label={`Add ${product.name} to basket`}>
+              <Button onClick={add} aria-label={`Add ${product.name} to basket`} disabled={isMaxBill}>
                 <Icon name="plus" className="size-4" />
                 Add
               </Button>

@@ -88,4 +88,32 @@ describe('<BasketDrawer />', () => {
     await user.click(await screen.findByRole('button', { name: 'Close basket' }))
     expect(store.getState().basketDrawer.isOpen).toBe(false)
   })
+
+  it('shows an alert saying 90% is touched when total reaches 90% of 2000', () => {
+    // 17 breads @ £1.10 = £18.70 (1870 pence >= 1800 pence)
+    const ninetyPercentBasket: Partial<RootState> = {
+      ...open,
+      basket: {
+        items: [{ productId: 'bread', quantity: 17 }],
+      },
+    }
+    renderWithStore(<BasketDrawer />, { preloadedState: ninetyPercentBasket })
+
+    expect(screen.getByRole('alert')).toHaveTextContent('90% is touched')
+    expect(screen.getByRole('button', { name: /checkout/i })).not.toBeDisabled()
+  })
+
+  it('disables the checkout button when cart value exceeds 2000', () => {
+    // 20 breads @ £1.10 = £22.00 (2200 pence > 2000 pence)
+    const overBudgetBasket: Partial<RootState> = {
+      ...open,
+      basket: {
+        items: [{ productId: 'bread', quantity: 20 }],
+      },
+    }
+    renderWithStore(<BasketDrawer />, { preloadedState: overBudgetBasket })
+
+    expect(screen.getByRole('button', { name: /checkout/i })).toBeDisabled()
+    expect(screen.getByText(/Cart value exceeds maximum budget/i)).toBeInTheDocument()
+  })
 })

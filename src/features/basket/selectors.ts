@@ -17,3 +17,11 @@ export const selectItemCount = (state: RootState) => selectBill(state).itemCount
 export const selectIsBasketEmpty = (state: RootState) => state.basket.items.length === 0
 
 export const selectIsBasketOpen = (state: RootState) => state.basketDrawer.isOpen
+
+export const MAX_BUDGET = 2000
+export const BUDGET_WARNING_THRESHOLD = 1800 // 90% of 2000
+
+export const selectIsMaxBudget = (state: RootState) => selectBill(state).total > MAX_BUDGET
+
+export const selectIs90PercentBudgetTouched = (state: RootState) =>
+  selectBill(state).total >= BUDGET_WARNING_THRESHOLD

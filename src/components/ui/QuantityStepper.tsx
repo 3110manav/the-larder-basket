@@ -1,5 +1,7 @@
 import { cn } from '@/lib/cn'
 import { Icon } from './Icon'
+import { useAppSelector } from '@/app/hooks'
+import { selectIsMaxBudget } from '@/features/basket/selectors'
 
 interface QuantityStepperProps {
   quantity: number
@@ -32,6 +34,8 @@ export function QuantityStepper({
     styles.button,
   )
 
+  const isMaxBill = useAppSelector(selectIsMaxBudget)
+
   return (
     <div
       role="group"
@@ -59,7 +63,7 @@ export function QuantityStepper({
       <button
         type="button"
         onClick={onIncrement}
-        disabled={quantity >= max}
+        disabled={quantity >= max || isMaxBill}
         aria-label={`Add one ${itemName}`}
         className={buttonClass}
       >

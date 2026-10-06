@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { createAppAsyncThunk } from '@/app/createAppAsyncThunk'
 import { basketCleared } from '@/features/basket/basketSlice'
 import { selectBill } from '@/features/basket/selectors'
@@ -11,12 +11,14 @@ export interface OrdersState {
   status: OrderStatus
   lastOrder: PlacedOrder | null
   error: string | null
+  isMaxBudget: boolean
 }
 
 const initialState: OrdersState = {
   status: 'idle',
   lastOrder: null,
   error: null,
+  isMaxBudget: false,
 }
 
 export const placeOrder = createAppAsyncThunk(
@@ -34,7 +36,8 @@ export const placeOrder = createAppAsyncThunk(
   {
     condition: (_, { getState }) => {
       const { basket, orders } = getState()
-      return basket.items.length > 0 && orders.status !== 'submitting'
+      const total = selectBill(getState()).total
+      return basket.items.length > 0 && orders.status !== 'submitting' && total <= 2000
     },
   },
 )
@@ -47,6 +50,9 @@ const ordersSlice = createSlice({
       state.status = 'idle'
       state.error = null
     },
+    setMaxBudget(state, action: PayloadAction<boolean>) {
+      state.isMaxBudget = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -65,5 +71,5 @@ const ordersSlice = createSlice({
   },
 })
 
-export const { confirmationDismissed } = ordersSlice.actions
+export const { confirmationDismissed, setMaxBudget } = ordersSlice.actions
 export default ordersSlice.reducer

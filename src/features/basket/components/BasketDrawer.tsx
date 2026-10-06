@@ -6,7 +6,7 @@ import { Render } from '@/components/ui/Render'
 import { CheckoutButton } from '@/features/orders/components/CheckoutButton'
 import { basketCleared } from '../basketSlice'
 import { useBasketDrawer } from '../hooks/useBasketDrawer'
-import { selectBill } from '../selectors'
+import { selectBill, selectIs90PercentBudgetTouched, selectIsMaxBudget } from '../selectors'
 import { BasketLine } from './BasketLine'
 import { BasketSummary } from './BasketSummary'
 import { EmptyBasket } from './EmptyBasket'
@@ -18,6 +18,9 @@ export function BasketDrawer() {
   const bill = useAppSelector(selectBill)
   const { isOpen, close } = useBasketDrawer()
   const isEmpty = bill.lines.length === 0
+
+  const isMaxBill = useAppSelector(selectIsMaxBudget)
+  const is90PercentTouched = useAppSelector(selectIs90PercentBudgetTouched)
 
   return (
     <Drawer open={isOpen} onClose={close} labelledBy={HEADING_ID}>
@@ -58,7 +61,16 @@ export function BasketDrawer() {
         </ul>
         <footer className="shrink-0 border-t border-slate-100 bg-white px-5 pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6">
           <BasketSummary bill={bill} />
-          <CheckoutButton total={bill.total} className="mt-4" />
+          <Render if={is90PercentTouched}>
+            <div
+              role="alert"
+              className="mt-3 flex items-center gap-2 rounded-xl bg-amber-50 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-amber-900 ring-1 ring-amber-300"
+            >
+              <Icon name="tag" className="size-4 shrink-0 text-amber-600" />
+              <span>90% is touched</span>
+            </div>
+          </Render>
+          <CheckoutButton total={bill.total} disabled={isMaxBill} className="mt-4" />
         </footer>
       </Render>
     </Drawer>
